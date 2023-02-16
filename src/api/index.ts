@@ -1,7 +1,11 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, json } from "express";
 import usersRoutes from "../handlers/users";
+import cors from "cors";
 
 const routes = Router();
+
+routes.use(cors());
+routes.use(json());
 
 routes.use("/users", usersRoutes);
 
