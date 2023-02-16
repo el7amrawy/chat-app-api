@@ -1,8 +1,11 @@
 import express, { Application } from "express";
 import socket from "./services/socket";
 import { createServer } from "http";
+import routes from "./api";
 
 const app: Application = express();
+
+app.use(routes);
 
 const server = createServer(app);
 

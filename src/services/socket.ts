@@ -12,6 +12,7 @@ const socket = (httpServer: http.Server) => {
   });
 
   io.on("connection", (socket: Socket) => {
+    socket.join(socket.handshake.query?.id as unknown as string);
     console.log(socket.id);
   });
 };
