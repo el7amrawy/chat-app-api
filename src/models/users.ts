@@ -55,14 +55,14 @@ class Users {
   }
 
   async authenticate(
-    username: User["username"],
+    email: User["email"],
     password: User["password"]
   ): Promise<User | null> {
-    const sql = "SELECT * FROM users WHERE username=$1";
+    const sql = "SELECT * FROM users WHERE email=$1";
 
     try {
       const conn = await client.connect();
-      const res = await conn.query(sql, [username]);
+      const res = await conn.query(sql, [email]);
       const user: User = res.rows[0];
 
       conn.release();
@@ -82,21 +82,22 @@ class Users {
     }
   }
 
-  // async getEmail(username: string): Promise<string> {
-  //   const sql = "SELECT * FROM users WHERE username=$1";
+  async checkEmail(email: string): Promise<User> {
+    const sql = "SELECT * FROM users WHERE email=$1";
 
-  //   try {
-  //     const conn = await client.connect();
-  //     const res = await conn.query(sql, [username]);
-  //     const user: User = res.rows[0];
+    try {
+      const conn = await client.connect();
+      const res = await conn.query(sql, [email]);
 
-  //     conn.release();
+      const user: User = res.rows[0];
 
-  //     return user.email;
-  //   } catch (err) {
-  //     throw new Error(`${err}`);
-  //   }
-  // }
+      conn.release();
+
+      return user;
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
 
   async updatePass(username: string, password: string): Promise<User> {
     const sql = "UPDATE users SET password=$1 WHERE username=$2 RETURNING *";

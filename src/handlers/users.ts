@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { User, Users } from "../models/users";
 import { verifyAuthToken, createAuthToken } from "../services/authorization";
 import checkUsername from "../middlewares/checkUsername";
+import checkEmail from "../middlewares/checkEmail";
 
 const u = new Users();
 
@@ -17,9 +18,9 @@ const create = async (req: Request, res: Response) => {
 };
 
 const authenticate = async (req: Request, res: Response) => {
-  const { username, password } = req.body.user;
+  const { email, password } = req.body.user;
   try {
-    const user = await u.authenticate(username, password);
+    const user = await u.authenticate(email, password);
     if (user) {
       res.json({ user, authToken: createAuthToken(user) });
       return;
@@ -33,7 +34,7 @@ const authenticate = async (req: Request, res: Response) => {
 const usersRoutes = Router();
 
 usersRoutes.post("/signin", authenticate);
-usersRoutes.post("/signup", checkUsername, create);
+usersRoutes.post("/signup", checkUsername, checkEmail, create);
 
 usersRoutes.use(verifyAuthToken);
 
