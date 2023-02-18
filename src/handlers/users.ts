@@ -3,6 +3,7 @@ import { User, Users } from "../models/users";
 import { verifyAuthToken, createAuthToken } from "../services/authorization";
 import checkUsername from "../middlewares/checkUsername";
 import checkEmail from "../middlewares/checkEmail";
+import contactsRoutes from "./contacts";
 
 const u = new Users();
 
@@ -27,7 +28,7 @@ const authenticate = async (req: Request, res: Response) => {
     }
     throw new Error("");
   } catch (err) {
-    res.status(400).json("wrong username or password");
+    res.status(400).json("wrong email or password");
   }
 };
 
@@ -37,5 +38,7 @@ usersRoutes.post("/signin", authenticate);
 usersRoutes.post("/signup", checkUsername, checkEmail, create);
 
 usersRoutes.use(verifyAuthToken);
+
+usersRoutes.use("/:username/contacts", contactsRoutes);
 
 export default usersRoutes;

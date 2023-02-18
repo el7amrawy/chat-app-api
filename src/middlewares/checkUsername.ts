@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User, Users } from "../models/users";
+import { Users } from "../models/users";
 
 const u = new Users();
 
