@@ -57,6 +57,24 @@ class Contacts {
       throw new Error(`${err}`);
     }
   }
+
+  async checkContact(
+    user_id: Contact["user_id"],
+    contact_id: Contact["contact_id"]
+  ): Promise<Contact> {
+    const sql = "SELECT * FROM contacts WHERE user_id=$1 AND contact_id=$2";
+    try {
+      const conn = await client.connect();
+      const res = await conn.query(sql, [user_id, contact_id]);
+
+      const contact: Contact = res.rows[0];
+      conn.release();
+
+      return contact;
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
 }
 
 export { Contacts, Contact };

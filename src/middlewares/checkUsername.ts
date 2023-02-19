@@ -1,9 +1,13 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Users } from "../models/users";
 
 const u = new Users();
 
-const checkUsername = async (req: Request, res: Response, next: Function) => {
+const checkUsername = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { username } = req.body.user;
     const user = await u.show(username);

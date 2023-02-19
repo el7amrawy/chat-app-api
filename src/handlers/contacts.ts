@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import checkContact from "../middlewares/checkContact";
 import { Contacts } from "../models/contacts";
 import { Users } from "../models/users";
 
@@ -36,6 +37,22 @@ const show = async (req: Request, res: Response) => {
 const contactsRoutes = Router({ mergeParams: true });
 
 contactsRoutes.get("/", show);
-contactsRoutes.post("/", create);
+contactsRoutes.post(
+  "/",
+  async (req: Request, res: Response, next: Function) => {
+    try {
+      const { contact_username } = req.body.contact;
+      const user = await u.show(contact_username);
+      if (user?.username) {
+        return next();
+      }
+      throw new Error("user is not found");
+    } catch (err) {
+      res.status(404).json(`${err}`);
+    }
+  },
+  checkContact,
+  create
+);
 
 export default contactsRoutes;
