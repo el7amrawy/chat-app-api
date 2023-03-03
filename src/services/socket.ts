@@ -12,8 +12,12 @@ const socket = (httpServer: http.Server) => {
   });
 
   io.on("connection", (socket: Socket) => {
-    socket.join(socket.handshake.query?.id as unknown as string);
-    console.log(socket.id);
+    const username = socket.handshake.query?.username as unknown as string;
+    socket.join(username);
+
+    socket.on("send-msg", ({ reciever, msg }) => {
+      socket.to(reciever).emit("recieve-msg", { sender: username, msg });
+    });
   });
 };
 

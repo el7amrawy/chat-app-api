@@ -5,7 +5,8 @@ import { Request, Response, NextFunction } from "express";
 const TOKEN_SECRET = process.env.TOKEN_SECRET as unknown as string;
 
 const createAuthToken = (user: User): string => {
-  return Jwt.sign(user, TOKEN_SECRET, { expiresIn: "2h" });
+  // return Jwt.sign(user, TOKEN_SECRET, { expiresIn: "2h" });
+  return Jwt.sign(user, TOKEN_SECRET);
 };
 
 const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {

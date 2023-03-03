@@ -25,7 +25,7 @@ class Contacts {
   async show(user_id: Contact["user_id"]): Promise<Contact[]> {
     const sql =
       // "SELECT * FROM contacts WHERE user_id=$1";
-      "SELECT contacts.*,users.username FROM contacts INNER JOIN users ON contacts.contact_id=users.id WHERE user_id=$1";
+      "SELECT contacts.*,users.username,users.name FROM contacts INNER JOIN users ON contacts.contact_id=users.id WHERE user_id=$1";
     try {
       const conn = await client.connect();
       const res = await conn.query(sql, [user_id]);
