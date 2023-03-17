@@ -7,14 +7,11 @@ type Message = {
 };
 
 class Messages {
-  async show(
-    senderId: Message["senderId"],
-    recieverId: Message["recieverId"]
-  ): Promise<Message[]> {
-    const sql = "SELECT * FROM messages WHERE senderId=$1 AND recieverId=$2";
+  async show(recieverId: Message["recieverId"]): Promise<Message[]> {
+    const sql = "SELECT * FROM messages WHERE recieverId=$1";
     try {
       const conn = await client.connect();
-      const res = await conn.query(sql, [senderId, recieverId]);
+      const res = await conn.query(sql, [recieverId]);
 
       const messages: Message[] = res.rows;
       conn.release();
