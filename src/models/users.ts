@@ -47,7 +47,7 @@ class Users {
       const conn = await client.connect();
       const res = await conn.query(sql, [username]);
       const user: User = res.rows[0];
-
+      conn.release();
       return user;
     } catch (err) {
       throw new Error(`couldn't show user ${err}`);
